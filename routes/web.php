@@ -8,6 +8,7 @@ use App\Http\Controllers\StaticController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\ThemeSettingsController;
+use App\Http\Controllers\SecuritySettingsController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::get('/settings/theme', [ThemeSettingsController::class, 'index'])->name('settings.theme');
     Route::post('/settings/theme', [ThemeSettingsController::class, 'update'])->name('settings.theme.update');
+
+     Route::get('/settings/security', [SecuritySettingsController::class, 'index'])->name('settings.security');
+    Route::post('/settings/security/email', [SecuritySettingsController::class, 'updateEmail'])->name('settings.security.email');
+    Route::post('/settings/security/password', [SecuritySettingsController::class, 'updatePassword'])->name('settings.security.password');
 
 });
 

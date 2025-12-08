@@ -34,20 +34,6 @@ export default function Profile({ user }) {
                 </div>
             )}
 
-            <div className="mb-4 text-xs">
-                <span className="text-gray-500">Settings: </span>
-                <span className="font-semibold text-gray-800">Profile</span>
-                <span className="text-gray-400"> • </span>
-                <Link
-                    href={route("settings.theme")}
-                    className="text-gray-500 hover:underline"
-                >
-                    Theme
-                </Link>
-                <span className="text-gray-400"> • </span>
-                <span className="text-gray-400">Security (TODO)</span>
-            </div>
-
             <form
                 onSubmit={submit}
                 className="bg-white p-6 rounded-lg shadow-sm space-y-6 max-w-xl"

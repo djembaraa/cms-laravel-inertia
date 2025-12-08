@@ -1,4 +1,3 @@
-import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
@@ -93,13 +92,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 <nav className="border-b border-gray-100 bg-white">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 justify-between">
-                            <div className="flex">
-                                <div className="flex shrink-0 items-center">
-                                    <Link href={route("dashboard")}>
-                                        <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                    </Link>
-                                </div>
-                            </div>
+                            <div className="flex" />
 
                             <div className="hidden sm:ms-6 sm:flex sm:items-center">
                                 <div className="relative ms-3">
@@ -269,8 +262,9 @@ function NavItem({ href, label, active = false }) {
 function SettingsGroup({ open, setOpen }) {
     const isProfileActive = route().current("settings.profile");
     const isThemeActive = route().current("settings.theme");
+    const isSecurityActive = route().current("settings.security");
 
-    const parentActive = isProfileActive || isThemeActive;
+    const parentActive = isProfileActive || isThemeActive || isSecurityActive;
 
     return (
         <div className="space-y-1">
@@ -300,9 +294,11 @@ function SettingsGroup({ open, setOpen }) {
                         label="Theme"
                         active={isThemeActive}
                     />
-                    <div className="block px-3 py-1.5 rounded-md text-xs text-gray-400 cursor-not-allowed">
-                        Security (soon)
-                    </div>
+                    <SettingsSubItem
+                        href={route("settings.security")}
+                        label="Security"
+                        active={isSecurityActive}
+                    />
                 </div>
             )}
         </div>
