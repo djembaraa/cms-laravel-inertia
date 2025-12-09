@@ -98,7 +98,6 @@ class ProjectController extends Controller
 
         $this->checkDiskUsageAndNotify($request->user());
 
-
         return redirect()->route('projects.index')->with('success', 'Project updated.');
     }
 

@@ -17,11 +17,12 @@ Route::get('/', [BlogController::class, 'index'])->name('blog.home');
 
 Route::get('/blog', fn () => redirect()->route('blog.home'));
 
-Route::get('/blog/posts/{post}', [BlogController::class, 'showPost'])
+Route::get('/blog/posts/{post:slug}', [BlogController::class, 'showPost'])
     ->name('blog.posts.show');
 
-Route::get('/blog/projects/{project}', [BlogController::class, 'showProject'])
+Route::get('/blog/projects/{project:slug}', [BlogController::class, 'showProject'])
     ->name('blog.projects.show');
+
 
 
 

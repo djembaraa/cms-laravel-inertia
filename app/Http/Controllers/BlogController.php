@@ -11,11 +11,38 @@ class BlogController extends Controller
 {
     public function index()
     {
-        // anggap pemilik blog = user pertama
         $owner = User::first();
 
-        $posts = Post::latest()->take(5)->get();
-        $projects = Project::latest()->take(6)->get();
+        $popularPosts = Post::orderByDesc('views')
+            ->take(6)
+            ->get();
+
+        $recentPosts = Post::latest()
+            ->paginate(6)
+            ->through(function (Post $post) {
+                return [
+                    'id'         => $post->id,
+                    'title'      => $post->title,
+                    'excerpt'    => str($post->body)->limit(200),
+                    'views'      => $post->views,
+                    'created_at' => $post->created_at?->toIso8601String(),
+                ];
+            });
+
+        $projects = Project::latest()
+            ->take(6)
+            ->get()
+            ->map(function (Project $project) {
+                return [
+                    'id'          => $project->id,
+                    'title'       => $project->title,
+                    'description' => str($project->description)->limit(160),
+                    'views'       => $project->views,
+                    'created_at'  => $project->created_at?->toIso8601String(),
+                    'media_path'  => $project->media_path,
+                    'techstack'   => $project->techstack,
+                ];
+            });
 
         return Inertia::render('Blog/Home', [
             'owner' => [
@@ -24,24 +51,17 @@ class BlogController extends Controller
                 'avatar'        => $owner?->avatar,
                 'project_logo'  => $owner?->project_logo,
             ],
-            'posts' => $posts->map(function (Post $post) {
+            'popularPosts' => $popularPosts->map(function (Post $post) {
                 return [
                     'id'         => $post->id,
                     'title'      => $post->title,
-                    'excerpt'    => str($post->body)->limit(160),
+                    'excerpt'    => str($post->body)->limit(140),
                     'views'      => $post->views,
                     'created_at' => $post->created_at?->toIso8601String(),
                 ];
             }),
-            'projects' => $projects->map(function (Project $project) {
-                return [
-                    'id'          => $project->id,
-                    'title'       => $project->title,
-                    'description' => str($project->description)->limit(160),
-                    'views'       => $project->views,
-                    'created_at'  => $project->created_at?->toIso8601String(),
-                ];
-            }),
+            'recentPosts' => $recentPosts,  // paginator
+            'projects'    => $projects,
         ]);
     }
 
